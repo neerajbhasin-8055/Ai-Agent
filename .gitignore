@@ -1,0 +1,17 @@
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environment
+env/
+.venv/
+
+# Streamlit specific
+.streamlit/
+
+# FastAPI specific
+*.sqlite
+*.db
+
+# Google credentials
+*.json

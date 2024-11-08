@@ -40,49 +40,38 @@ It's best practice to use a virtual environment to manage the dependencies and k
 Step-by-Step Guide:
 Navigate to the Project Directory: Use the terminal or command prompt to go to the folder where you cloned the repository.
 
-
-cd your-repository-name
+```cd your-repository-name```
 Create a Virtual Environment: Run the following command to create a virtual environment named env:
 
-
-python -m venv env
+```python -m venv env```
 Activate the Virtual Environment:
 
-On Windows:
-.\env\Scripts\activate
-On macOS/Linux:
-source env/bin/activate
-Install the Project Dependencies: Ensure your virtual environment is activated. Now, install all necessary project dependencies by running:
 
-pip install -r requirements.txt
+On Windows: ```.\env\Scripts\activate```
+On macOS/Linux: ```source env/bin/activate```
+
+Install the Project Dependencies: Ensure your virtual environment is activated. Now, install all necessary project dependencies by running: ```pip install -r requirements.txt```
+
 This will install all the libraries needed for both the backend and frontend (such as FastAPI, Streamlit, Pandas, and Requests).
 
 ### 3. **Running the Backend (FastAPI)**
 Step-by-Step Guide:
 Navigate to the Backend Folder: In your terminal, navigate to the folder where the backend code (e.g., main.py) is located.
 
-Run the FastAPI Backend: To start the backend server, use Uvicorn:
-
-uvicorn main:app --reload
+Run the FastAPI Backend: To start the backend server, use Uvicorn: ```uvicorn main:app --reload```
 The --reload flag allows automatic reloading of the server whenever you make changes to the code. The backend will be accessible at http://localhost:8000.
 
 ### 4. **Running the Frontend (Streamlit)**
 Step-by-Step Guide:
 Navigate to the Frontend Folder: Go to the folder where your frontend code (e.g., app.py) is located.
 
-Run the Streamlit Frontend: Start the frontend by running:
-
-streamlit run app.py
+Run the Streamlit Frontend: Start the frontend by running: ```streamlit run app.py```
 Access the Frontend: Streamlit will open a new tab in your default browser or you can manually go to http://localhost:8501 to interact with the app.
 
 ### 5. **Deactivating the Virtual Environment**
-Once you are done working on the project, deactivate the virtual environment by running:
-
-deactivate
+Once you are done working on the project, deactivate the virtual environment by running: ```deactivate```
 Running Without a Virtual Environment (Not Recommended)
-If you prefer not to use a virtual environment, you can install the required dependencies globally. Run the following command to install the dependencies:
-
-pip install fastapi uvicorn pandas streamlit requests
+If you prefer not to use a virtual environment, you can install the required dependencies globally. Run the following command to install the dependencies: ```pip install fastapi uvicorn pandas streamlit requests```
 Then, follow the same steps to run the backend and frontend as mentioned above.
 
 ### Key Points:

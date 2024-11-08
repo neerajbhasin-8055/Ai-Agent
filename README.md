@@ -33,8 +33,7 @@ This project involves creating an AI agent that can read data from a CSV file or
 ### 1. **Clone the Project**
 To get started with the project, first, clone the repository using Git. In your terminal, run:
 
-```bash``
-git clone https://github.com/your-username/your-repository-name.git
+```git clone https://github.com/your-username/your-repository-name.git```
 ### 2. **Set Up Virtual Environment (Recommended)**
 It's best practice to use a virtual environment to manage the dependencies and keep your system environment clean.
 

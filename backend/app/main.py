@@ -1,51 +1,56 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-import gspread
+from pydantic import BaseModel
+from typing import List
 import pandas as pd
 from io import StringIO
-from pydantic import BaseModel
 
 app = FastAPI()
 
-class SheetURL(BaseModel):
-    sheet_url: str
+# Pydantic model to validate query input
+class QueryRequest(BaseModel):
+    column_name: str
+    prompt: str
+    data: List[dict]
 
 @app.post("/upload-csv")
 async def upload_csv(file: UploadFile = File(...)):
     try:
         # Read CSV content
         contents = await file.read()
+        df = pd.read_csv(StringIO(contents.decode("utf-8")))
 
-        # Attempt to decode the file with UTF-8, fallback to ISO-8859-1 if UTF-8 fails
-        try:
-            df = pd.read_csv(StringIO(contents.decode("utf-8")))
-        except UnicodeDecodeError:
-            try:
-                df = pd.read_csv(StringIO(contents.decode("ISO-8859-1")))
-            except Exception as e:
-                raise HTTPException(status_code=400, detail=f"Error decoding CSV file: {str(e)}")
-        
         # Get columns and data
         columns = df.columns.tolist()
         data = df.to_dict(orient="records")
-        
+
         return JSONResponse(content={"columns": columns, "data": data})
-    
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error parsing CSV: {str(e)}")
 
-@app.post("/connect-sheet")
-async def connect_sheet(sheet_url: SheetURL):
+@app.post("/run-query")
+async def run_query(request: QueryRequest):
+    results = []
+
     try:
-        # Authenticate and access the Google Sheet
-        gc = gspread.service_account(filename='path-to-your-google-credentials.json')
-        worksheet = gc.open_by_url(sheet_url.sheet_url).sheet1
-        
-        # Get data and columns from the sheet
-        data = worksheet.get_all_records()
-        columns = worksheet.row_values(1)  # Assuming first row is column headers
-        
-        return JSONResponse(content={"columns": columns, "data": data})
-    
+        column_name = request.column_name
+        prompt = request.prompt
+        data = request.data
+
+        # Process each row in the data
+        for row in data:
+            entity = row.get(column_name)
+            if not entity:
+                continue  # Skip rows without the entity value
+
+            query = prompt.replace("{entity}", str(entity))
+            
+            # Simulate the result (you can replace this with actual querying logic)
+            response_data = {"entity": entity, "query_result": f"Simulated result for '{query}'"}
+            results.append(response_data)
+
+        return JSONResponse(content={"results": results})
+
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error connecting to Google Sheet: {str(e)}")
+        raise HTTPException(status_code=422, detail=f"Error processing query: {str(e)}")
